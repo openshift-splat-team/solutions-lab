@@ -1,0 +1,25 @@
+# gitpod.io/#github.com/CaravanaCloud/red-pod
+image:
+  file: .gitpod.Containerfile
+
+tasks:
+  - name: Welcome
+    init: |
+      mkdir -p "$HOME/.kube"
+      openshift-install version
+      oc version --client
+      echo "Init openshift-lab at $(date)"
+    command: echo "Start openshift-lab at $(date)"
+
+ports:
+  - port: 8080
+    onOpen: ignore
+    visibility: public
+
+vscode:
+  extensions:
+    - redhat.java
+    - ms-azuretools.vscode-docker
+    - ms-python.python
+    - esbenp.prettier-vscode
+

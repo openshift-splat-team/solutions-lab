@@ -1,0 +1,4 @@
+ccoctl filter=lfs diff=lfs merge=lfs -text
+oc filter=lfs diff=lfs merge=lfs -text
+openshift-install filter=lfs diff=lfs merge=lfs -text
+kubectl filter=lfs diff=lfs merge=lfs -text

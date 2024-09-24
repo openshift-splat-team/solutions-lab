@@ -1,0 +1,6 @@
+.envrc
+.env
+.run
+
+bin
+release-*

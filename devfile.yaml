@@ -1,0 +1,19 @@
+schemaVersion: 2.3.0
+metadata:
+  name: openshift-lab-template
+  version: 0.0.1
+
+projects:
+  - name: openshift-lab-template
+    git:
+      remotes:
+        origin: 'https://github.com/faermanj/openshift-lab-template.git'
+      checkoutFrom:
+        revision: main
+
+components:
+  - name: tools
+    container:
+      image: fedora:latest
+      command: ['/bin/bash']
+      mountSources: true
