@@ -2,7 +2,7 @@
 
 set -x 
 
-export TARGET_DIR="./release/latest"
+export TARGET_DIR="./release-latest/bin"
 mkdir -p "$TARGET_DIR"
 
 # OpenShift Installer

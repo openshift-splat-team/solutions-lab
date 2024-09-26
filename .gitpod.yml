@@ -3,8 +3,9 @@ image:
   file: .gitpod.Containerfile
 
 tasks:
-  - name: Welcome
+  - name: Welcome to OpenShift Solutions Lab
     init: |
+      ./download-clients.sh
       echo "Solutions lab intialized at $(date)"
     command: |
       echo "Solutions lab started at $(date)"
