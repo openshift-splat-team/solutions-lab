@@ -2,4 +2,5 @@
 .env
 .run
 
+bin
 release-*
