@@ -7,7 +7,7 @@ projects:
   - name: openshift-lab-template
     git:
       remotes:
-        origin: 'https://github.com/faermanj/openshift-lab-template.git'
+        origin: 'https://github.com/openshift-splat-team/solutions-lab'
       checkoutFrom:
         revision: main
 

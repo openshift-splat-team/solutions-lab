@@ -5,11 +5,9 @@ image:
 tasks:
   - name: Welcome
     init: |
-      mkdir -p "$HOME/.kube"
-      openshift-install version
-      oc version --client
-      echo "Init openshift-lab at $(date)"
-    command: echo "Start openshift-lab at $(date)"
+      echo "Solutions lab intialized at $(date)"
+    command: |
+      echo "Solutions lab started at $(date)"
 
 ports:
   - port: 8080
