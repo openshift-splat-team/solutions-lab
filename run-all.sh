@@ -2,6 +2,6 @@
 
 for dir in test-cases/*; do
   if [ -d "$dir" ]; then
-    ./run-case.sh "$dir"
+    ./run-case.py "$dir"
   fi
 done

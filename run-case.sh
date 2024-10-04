@@ -31,7 +31,6 @@ if [ ! -d "$CLUSTER_DIR/bin" ]; then
     exit 1
 fi
 
-
 # Load case properties
 if [ -f "$CLUSTER_DIR/lab.properties" ]; then
     echo "Loading lab properties..."
@@ -42,15 +41,21 @@ echo "Lab properties:"
 echo "LAB_CLUSTER_RETAIN=$LAB_CLUSTER_RETAIN"
 sleep 15
 
-echo "Generating install-config.yaml..."
-envsubst < $CASE_DIR/install-config.env.yaml > $CLUSTER_DIR/install-config.yaml
-cp $CLUSTER_DIR/install-config.yaml $CLUSTER_DIR/install-config.bak.yaml
-
 
 if [ -f "$CLUSTER_DIR/before-create.sh" ]; then
     echo "Executing before-create hook [$CLUSTER_DIR/before-create.sh]"
     source "$CLUSTER_DIR/before-create.sh" | tee $CLUSTER_DIR/log/before-create.log.txt
+    # if that fails, exit
+    command_exit_status=$?
+    if [ $command_exit_status -ne 0 ]; then
+        echo "Before-create hook failed with exit code $command_exit_status."
+        exit $command_exit_status
 fi
+
+echo "Generating install-config.yaml..."
+envsubst < $CASE_DIR/install-config.env.yaml > $CLUSTER_DIR/install-config.yaml
+cp $CLUSTER_DIR/install-config.yaml $CLUSTER_DIR/install-config.bak.yaml
+
 
 echo "OpenShift version check"
 $CLUSTER_DIR/bin/openshift-install version | tee $CLUSTER_DIR/log/openshift-version.log.txt
@@ -112,6 +117,11 @@ if [ "$LAB_CLUSTER_RETAIN" = "true" ]; then
 else
     echo "Deleting cluster [$CLUSTER_NAME]"
     $CLUSTER_DIR/bin/openshift-install destroy cluster --dir=$CLUSTER_DIR
+
+    if [ -f "$CLUSTER_DIR/after-destroy.sh" ]; then
+        echo "Executing after-destroy hook [$CLUSTER_DIR/after-destroy.sh]"
+        source "$CLUSTER_DIR/after-destroy.sh" | tee $CLUSTER_DIR/log/after-destroy.log.txt
+    fi
 fi
 
 echo "Case [$CASE_NAME] considering pruning..."
