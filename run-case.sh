@@ -33,9 +33,9 @@ fi
 
 
 # Load case properties
-if [ -f "$CLUSTER_DIR/lab.properties.sh" ]; then
+if [ -f "$CLUSTER_DIR/lab.properties" ]; then
     echo "Loading lab properties..."
-    source "$CLUSTER_DIR/lab.properties.sh"
+    source "$CLUSTER_DIR/lab.properties"
 fi
 
 echo "Lab properties:"

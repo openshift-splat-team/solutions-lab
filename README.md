@@ -1,6 +1,13 @@
 # OpenShift Solutions Lab
 
-This repository provides a reference implementation for specific OpenShift solutions to customers and partners.
+This repository provides a reference implementation for specific OpenShift solutions to customers and partners. 
+
+# How this works?
+
+Executing the ```run-all.sh``` script will run all test cases defined in the ```test-cases```. Each test case is a directory containing the configuration templates and scripts to execute it. For each case, the script will generate the configuration text files, execute hooks, create cluster, run test, and finally dispose of resources. 
+
+In the ```cases-lib``` directory you will find examples demonstrating specific scenarios, such as different cloud providers, infrastructure tools, operators selection, and general configuration.
+
 
 # Features
 
