@@ -42,15 +42,15 @@ echo "LAB_CLUSTER_RETAIN=$LAB_CLUSTER_RETAIN"
 sleep 15
 
 
-if [ -f "$CLUSTER_DIR/before-create.sh" ]; then
-    echo "Executing before-create hook [$CLUSTER_DIR/before-create.sh]"
-    source "$CLUSTER_DIR/before-create.sh" | tee $CLUSTER_DIR/log/before-create.log.txt
-    # if that fails, exit
-    command_exit_status=$?
-    if [ $command_exit_status -ne 0 ]; then
-        echo "Before-create hook failed with exit code $command_exit_status."
-        exit $command_exit_status
-fi
+# if [ -f "$CLUSTER_DIR/before-create.sh" ]; then
+#    echo "Executing before-create hook [$CLUSTER_DIR/before-create.sh]"
+#     source "$CLUSTER_DIR/before-create.sh" | tee $CLUSTER_DIR/log/before-create.log.txt
+#     # if that fails, exit
+#     command_exit_status=$?
+#     if [ $command_exit_status -ne 0 ]; then
+#         echo "Before-create hook failed with exit code $command_exit_status."
+#         exit $command_exit_status
+# fi
 
 echo "Generating install-config.yaml..."
 envsubst < $CASE_DIR/install-config.env.yaml > $CLUSTER_DIR/install-config.yaml

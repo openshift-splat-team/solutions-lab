@@ -12,46 +12,39 @@ aws cloudformation deploy \
 # Fetch and assign the VPC ID
 VPC_ID=$(aws cloudformation describe-stacks --stack-name $CLUSTER_NAME --query "Stacks[0].Outputs[?OutputKey=='VPCId'].OutputValue" --output text)
 echo "#| VPC_ID=$VPC_ID"
-export VPC_ID
 
 # Fetch and assign the Internet Gateway ID
 INTERNET_GATEWAY_ID=$(aws cloudformation describe-stacks --stack-name $CLUSTER_NAME --query "Stacks[0].Outputs[?OutputKey=='InternetGatewayId'].OutputValue" --output text)
 echo "#| IGW_ID=$INTERNET_GATEWAY_ID"
-export INTERNET_GATEWAY_ID
 
 # Fetch and assign the Public Subnet 1 ID
 PUBLIC_SUBNET1_ID=$(aws cloudformation describe-stacks --stack-name $CLUSTER_NAME --query "Stacks[0].Outputs[?OutputKey=='PublicSubnet1Id'].OutputValue" --output text)
-echo "#| PUBLIC_SUBNET_1=$PUBLIC_SUBNET1_ID"
-export PUBLIC_SUBNET1_ID
+echo "#| PUBLIC_SUBNET1_ID=$PUBLIC_SUBNET1_ID"
 
 # Fetch and assign the Public Subnet 2 ID
 PUBLIC_SUBNET2_ID=$(aws cloudformation describe-stacks --stack-name $CLUSTER_NAME --query "Stacks[0].Outputs[?OutputKey=='PublicSubnet2Id'].OutputValue" --output text)
-echo "#| PUBLIC_SUBNET_2=$PUBLIC_SUBNET2_ID"
-export PUBLIC_SUBNET2_ID
+echo "#| PUBLIC_SUBNET2_ID=$PUBLIC_SUBNET2_ID"
 
 # Fetch and assign the Public Subnet 3 ID
 PUBLIC_SUBNET3_ID=$(aws cloudformation describe-stacks --stack-name $CLUSTER_NAME --query "Stacks[0].Outputs[?OutputKey=='PublicSubnet3Id'].OutputValue" --output text)
-echo "#| PUBLIC_SUBNET_3=$PUBLIC_SUBNET3_ID"
-export PUBLIC_SUBNET3_ID
+echo "#| PUBLIC_SUBNET3_ID=$PUBLIC_SUBNET3_ID"
 
 # Fetch and assign the Isolated Subnet 1 ID
 ISOLATED_SUBNET1_ID=$(aws cloudformation describe-stacks --stack-name $CLUSTER_NAME --query "Stacks[0].Outputs[?OutputKey=='IsolatedSubnet1Id'].OutputValue" --output text)
-echo "#| ISOLATED_SUBNET_1=$ISOLATED_SUBNET1_ID"
-export ISOLATED_SUBNET1_ID
+echo "#| ISOLATED_SUBNET1_ID=$ISOLATED_SUBNET1_ID"
 
 # Fetch and assign the Isolated Subnet 2 ID
 ISOLATED_SUBNET2_ID=$(aws cloudformation describe-stacks --stack-name $CLUSTER_NAME --query "Stacks[0].Outputs[?OutputKey=='IsolatedSubnet2Id'].OutputValue" --output text)
-echo "#| ISOLATED_SUBNET_2=$ISOLATED_SUBNET2_ID"
-export ISOLATED_SUBNET2_ID
+echo "#| ISOLATED_SUBNET2_ID=$ISOLATED_SUBNET2_ID"
 
 # Fetch and assign the Isolated Subnet 3 ID
 ISOLATED_SUBNET3_ID=$(aws cloudformation describe-stacks --stack-name $CLUSTER_NAME --query "Stacks[0].Outputs[?OutputKey=='IsolatedSubnet3Id'].OutputValue" --output text)
-echo "#| ISOLATED_SUBNET_3=$ISOLATED_SUBNET3_ID"
-export ISOLATED_SUBNET3_ID
+echo "#| ISOLATED_SUBNET3_ID=$ISOLATED_SUBNET3_ID"
 
 # Fetch and assign the Public Route Table ID
 PUBLIC_ROUTE_TABLE_ID=$(aws cloudformation describe-stacks --stack-name $CLUSTER_NAME --query "Stacks[0].Outputs[?OutputKey=='PublicRouteTableId'].OutputValue" --output text)
 echo "#| PUBLIC_ROUTE_TABLE_ID=$PUBLIC_ROUTE_TABLE_ID"
 export PUBLIC_ROUTE_TABLE_ID
 
+echo "Cloudformation stack [$CLUSTER_NAME] created."
 echo "Hook [before-create] completed."

@@ -1,4 +1,5 @@
 #!/bin/bash
 
-aws cloudformation deploy \
-    --stack-name "$CLUSTER_NAME" 
+# aws cloudformation delete-stack --stack-name "$CLUSTER_NAME" 
+
+echo "Cloudformation stack [$CLUSTER_NAME] destroyed."
