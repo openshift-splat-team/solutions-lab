@@ -1,10 +1,10 @@
 #!/bin/bash
-set -x
+# set -x
 
-echo "Executing test case [$CASE_NAME]"
+# echo "Executing test case [$CASE_NAME]"
 
-export CASE_DIR="$1"
-export CASE_NAME="$(basename $CASE_DIR)"
+# export CASE_DIR="$1"
+# export CASE_NAME="$(basename $CASE_DIR)"
 
 echo "Running case [$CASE_NAME] from [$CASE_DIR]"
 
@@ -14,11 +14,11 @@ export CLUSTER_DIR=".run/$CLUSTER_NAME"
 export SSH_KEY=$(cat $HOME/.ssh/id_rsa.pub)
 
 
-echo "Generating cluster configuration for case [$CASE_NAME] cluster [$CLUSTER_NAME]..."
-mkdir -p "$CLUSTER_DIR/log"
+# echo "Generating cluster configuration for case [$CASE_NAME] cluster [$CLUSTER_NAME]..."
+# mkdir -p "$CLUSTER_DIR/log"
 
-echo "Copying case files to cluster directory..."
-cp -a $CASE_DIR/* $CLUSTER_DIR/
+# echo "Copying case files to cluster directory..."
+# cp -a $CASE_DIR/* $CLUSTER_DIR/
 
 # Check if dir $CLUSTER_DIR/bin exists, if not copy from release
 if [ ! -d "$CLUSTER_DIR/bin" ]; then
