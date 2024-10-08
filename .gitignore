@@ -4,3 +4,6 @@
 
 bin
 release-*
+
+# Python
+*.pyc

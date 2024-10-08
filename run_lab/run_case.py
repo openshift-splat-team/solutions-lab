@@ -11,6 +11,7 @@ from .hooks import *
 from .tools import *
 from .logs import *
 from .templates import *
+from .openshift import *
 
 def run_case(case_dir):
     info(f"Running test case [{case_dir}]...")
@@ -26,12 +27,11 @@ def run_case(case_dir):
     copy(case_dir, cluster_dir)
     verify_clients(cluster_dir)
     env = os.environ.copy()
+    load_extra_env(env)
     before_create = run_hook(cluster_dir, cluster_name, "before-create", env)
-    if not before_create:
-        info("Failed to execute before-create hook" )
-        sys.exit(1)
     captures = before_create[1]
     render_etc(cluster_dir, captures)
+    backup_install_config(cluster_dir)
     after_destroy = run_hook(cluster_dir, cluster_name, "after-destroy", captures)
     info(f"Test case [{cluster_name}] completed")
 

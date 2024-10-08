@@ -65,3 +65,20 @@ def exec_cmd(cmd, cluster_dir, log_name, env, shell=False):
         info(f"Failed to execute {cmd}. Error: {e}")
         with open(log_file, "a") as f:
              f.write(e.stderr)
+
+def read_ssh_pub_key():
+    # Path to the default SSH private key
+    ssh_key_path = os.path.expanduser("~/.ssh/id_rsa.pub")
+
+    # Check if the file exists
+    if not os.path.exists(ssh_key_path):
+        raise FileNotFoundError(f"SSH key not found at {ssh_key_path}")
+
+    # Read the SSH key into a string
+    with open(ssh_key_path, 'r') as file:
+        ssh_key = file.read()
+    
+    return ssh_key
+
+def load_extra_env(env):
+    env["SSH_KEY"] = read_ssh_pub_key()
