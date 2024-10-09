@@ -11,6 +11,14 @@ def print_version(cluster_dir):
         log_name="openshift-version",
         shell=True)
 
+def create_cluster(cluster_dir, env):
+    exec_cmd(
+        cmd="bin/openshift-install create cluster", 
+        cluster_dir=cluster_dir,
+        log_name="create-cluster",
+        shell=True,
+        env=env)
+
 def backup_install_config(cluster_dir):
     install_config = f"{cluster_dir}/install-config.yaml"
     #copy if exists, warn if not

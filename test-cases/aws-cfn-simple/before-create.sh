@@ -41,6 +41,17 @@ echo "#| ISOLATED_SUBNET2_ID=$ISOLATED_SUBNET2_ID"
 ISOLATED_SUBNET3_ID=$(aws cloudformation describe-stacks --stack-name $CLUSTER_NAME --query "Stacks[0].Outputs[?OutputKey=='IsolatedSubnet3Id'].OutputValue" --output text)
 echo "#| ISOLATED_SUBNET3_ID=$ISOLATED_SUBNET3_ID"
 
+PRIVATE_SUBNET1_ID=$(aws cloudformation describe-stacks --stack-name $CLUSTER_NAME --query "Stacks[0].Outputs[?OutputKey=='PrivateSubnet1Id'].OutputValue" --output text)
+echo "#| PRIVATE_SUBNET1_ID=$PRIVATE_SUBNET1_ID"
+
+
+PRIVATE_SUBNET2_ID=$(aws cloudformation describe-stacks --stack-name $CLUSTER_NAME --query "Stacks[0].Outputs[?OutputKey=='PrivateSubnet2Id'].OutputValue" --output text)
+echo "#| PRIVATE_SUBNET2_ID=$PRIVATE_SUBNET2_ID"
+
+
+PRIVATE_SUBNET3_ID=$(aws cloudformation describe-stacks --stack-name $CLUSTER_NAME --query "Stacks[0].Outputs[?OutputKey=='PrivateSubnet3Id'].OutputValue" --output text)
+echo "#| PRIVATE_SUBNET3_ID=$PRIVATE_SUBNET3_ID"
+
 # Fetch and assign the Public Route Table ID
 PUBLIC_ROUTE_TABLE_ID=$(aws cloudformation describe-stacks --stack-name $CLUSTER_NAME --query "Stacks[0].Outputs[?OutputKey=='PublicRouteTableId'].OutputValue" --output text)
 echo "#| PUBLIC_ROUTE_TABLE_ID=$PUBLIC_ROUTE_TABLE_ID"

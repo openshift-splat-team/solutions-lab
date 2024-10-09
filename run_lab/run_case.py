@@ -35,7 +35,11 @@ def run_case(case_dir):
     render_etc(cluster_dir, captures)
     print_version(cluster_dir)
     backup_install_config(cluster_dir)
-    after_destroy = run_hook(cluster_dir, cluster_name, "after-destroy", captures)
+    create_cluster(cluster_dir, env)
+    retain_cluster = True
+    if not retain_cluster:
+        # destroy_cluster(cluster_dir)
+        after_destroy = run_hook(cluster_dir, cluster_name, "after-destroy", captures)
     info(f"Test case [{cluster_name}] completed")
 
 

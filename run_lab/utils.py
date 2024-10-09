@@ -1,17 +1,25 @@
 import os
 import errno
 import sys
+import importlib.util
 import subprocess
 import re
 
 from .logs import *
 
+def import_module(module_name):
+    # Check if the module is already installed
+    if importlib.util.find_spec(module_name) is None:
+        print(f"Module '{module_name}' is not installed. Installing now...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", module_name])
+    else:
+        print(f"Module '{module_name}' is already installed.")
+
 def copy(src, dst):
 # coppy all files and directries from src to dest
-    cwd = os.getcwd()
-    cmd = "cp -a %s/* %s/" % (src, dst)
+    cmd = "cp -a %s/* ." % (src)
     print("RUNNNING CMD: ", cmd) 
-    exec_cmd(cmd, cluster_dir=cwd, log_name="case-copy", shell=True)
+    exec_cmd(cmd, cluster_dir=dst, log_name="case-copy", shell=True)
 
 def mkdir(path):
     try:

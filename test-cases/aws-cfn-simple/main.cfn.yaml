@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: VPC with 3 Public and 3 Isolated Subnets
+Description: VPC with 3 Public, 3 Isolated, and 3 Private Subnets
 
 Parameters:
   VPCCidr:
@@ -81,6 +81,27 @@ Resources:
       CidrBlock: 10.0.6.0/24
       AvailabilityZone: !Select [2, !GetAZs '']
 
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.7.0/24
+      AvailabilityZone: !Select [0, !GetAZs '']
+
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.8.0/24
+      AvailabilityZone: !Select [1, !GetAZs '']
+
+  PrivateSubnet3:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.9.0/24
+      AvailabilityZone: !Select [2, !GetAZs '']
+
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -114,19 +135,104 @@ Resources:
       SubnetId: !Ref PublicSubnet3
       RouteTableId: !Ref PublicRouteTable
 
+  # NAT Gateways for Private Subnets
+  NATGateway1:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt 'EIP1.AllocationId'
+      SubnetId: !Ref PublicSubnet1
+  EIP1:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  NATGateway2:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt 'EIP2.AllocationId'
+      SubnetId: !Ref PublicSubnet2
+  EIP2:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  NATGateway3:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt 'EIP3.AllocationId'
+      SubnetId: !Ref PublicSubnet3
+  EIP3:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  PrivateRouteTable1:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+
+  PrivateRouteTable2:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+
+  PrivateRouteTable3:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+
+  PrivateRoute1:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable1
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NATGateway1
+
+  PrivateRoute2:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable2
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NATGateway2
+
+  PrivateRoute3:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable3
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NATGateway3
+
+  PrivateSubnet1RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet1
+      RouteTableId: !Ref PrivateRouteTable1
+
+  PrivateSubnet2RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet2
+      RouteTableId: !Ref PrivateRouteTable2
+
+  PrivateSubnet3RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet3
+      RouteTableId: !Ref PrivateRouteTable3
+
 Outputs:
   VPCId:
     Description: The ID of the VPC
     Value: !Ref VPC
-    
+
   InternetGatewayId:
     Description: The ID of the Internet Gateway
     Value: !Ref InternetGateway
-    
+
   PublicSubnet1Id:
     Description: The ID of the first public subnet
     Value: !Ref PublicSubnet1
-    
+
   PublicSubnet2Id:
     Description: The ID of the second public subnet
     Value: !Ref PublicSubnet2
@@ -147,6 +253,30 @@ Outputs:
     Description: The ID of the third isolated subnet
     Value: !Ref IsolatedSubnet3
 
+  PrivateSubnet1Id:
+    Description: The ID of the first private subnet
+    Value: !Ref PrivateSubnet1
+
+  PrivateSubnet2Id:
+    Description: The ID of the second private subnet
+    Value: !Ref PrivateSubnet2
+
+  PrivateSubnet3Id:
+    Description: The ID of the third private subnet
+    Value: !Ref PrivateSubnet3
+
   PublicRouteTableId:
     Description: The ID of the public route table
     Value: !Ref PublicRouteTable
+
+  PrivateRouteTable1Id:
+    Description: The ID of the first private route table
+    Value: !Ref PrivateRouteTable1
+
+  PrivateRouteTable2Id:
+    Description: The ID of the second private route table
+    Value: !Ref PrivateRouteTable2
+
+  PrivateRouteTable3Id:
+    Description: The ID of the third private route table
+    Value: !Ref PrivateRouteTable3
