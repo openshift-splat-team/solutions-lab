@@ -10,7 +10,6 @@ def print_version(cluster_dir):
         cluster_dir=cluster_dir,
         log_name="openshift-version",
         shell=True)
-    print("\033[31m ************* \033[0m")
 
 def backup_install_config(cluster_dir):
     install_config = f"{cluster_dir}/install-config.yaml"
