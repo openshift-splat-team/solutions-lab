@@ -2,6 +2,15 @@ import os
 import shutil
 
 from .logs import *
+from .utils import *
+
+def print_version(cluster_dir):
+    exec_cmd(
+        cmd="bin/openshift-install version", 
+        cluster_dir=cluster_dir,
+        log_name="openshift-version",
+        shell=True)
+    print("\033[31m ************* \033[0m")
 
 def backup_install_config(cluster_dir):
     install_config = f"{cluster_dir}/install-config.yaml"

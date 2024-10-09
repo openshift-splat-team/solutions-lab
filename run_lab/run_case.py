@@ -29,8 +29,11 @@ def run_case(case_dir):
     env = os.environ.copy()
     load_extra_env(env)
     before_create = run_hook(cluster_dir, cluster_name, "before-create", env)
-    captures = before_create[1]
+    captures = {}
+    if before_create:
+        captures = before_create[1]
     render_etc(cluster_dir, captures)
+    print_version(cluster_dir)
     backup_install_config(cluster_dir)
     after_destroy = run_hook(cluster_dir, cluster_name, "after-destroy", captures)
     info(f"Test case [{cluster_name}] completed")

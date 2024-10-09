@@ -52,13 +52,11 @@ sleep 15
 #         exit $command_exit_status
 # fi
 
-echo "Generating install-config.yaml..."
-envsubst < $CASE_DIR/install-config.env.yaml > $CLUSTER_DIR/install-config.yaml
-cp $CLUSTER_DIR/install-config.yaml $CLUSTER_DIR/install-config.bak.yaml
+# echo "Generating install-config.yaml..."
+# envsubst < $CASE_DIR/install-config.env.yaml > $CLUSTER_DIR/install-config.yaml
+# cp $CLUSTER_DIR/install-config.yaml $CLUSTER_DIR/install-config.bak.yaml
 
 
-echo "OpenShift version check"
-$CLUSTER_DIR/bin/openshift-install version | tee $CLUSTER_DIR/log/openshift-version.log.txt
 
 
 echo "Case [$CASE_NAME][$(date)] creating cluster [$CLUSTER_NAME]..."

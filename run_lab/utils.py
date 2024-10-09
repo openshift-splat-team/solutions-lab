@@ -8,16 +8,10 @@ from .logs import *
 
 def copy(src, dst):
 # coppy all files and directries from src to dest
-    for item in os.listdir(src):
-        s = os.path.join(src, item)
-        d = os.path.join(dst, item)
-        if os.path.isdir(s):
-            mkdir(d)
-            copy(s, d)
-        else:
-            with open(s, 'rb') as f:
-                with open(d, 'wb') as f2:
-                    f2.write(f.read())
+    cwd = os.getcwd()
+    cmd = "cp -a %s/* %s/" % (src, dst)
+    print("RUNNNING CMD: ", cmd) 
+    exec_cmd(cmd, cluster_dir=cwd, log_name="case-copy", shell=True)
 
 def mkdir(path):
     try:
@@ -28,7 +22,7 @@ def mkdir(path):
 
 pattern = r'^\s*#\|\s*(\S+)\s*=\s*(\S+.*)$'
 
-def exec_cmd(cmd, cluster_dir, log_name, env, shell=False):
+def exec_cmd(cmd="/bin/false", cluster_dir=".", log_name="exec_cmd", env={}, shell=False):
     log_dir = f"{cluster_dir}/logs"
     os.makedirs(log_dir, exist_ok=True)
     log_file = f"{log_dir}/{log_name}.log"
@@ -54,11 +48,12 @@ def exec_cmd(cmd, cluster_dir, log_name, env, shell=False):
                     value = match.group(2).strip()
                     new_env[key] = value
             # update the environment with the new values
-            info(f"Captured {len(new_env)} variables {new_env.keys()}")
+            debug(f"Captured {len(new_env)} variables {new_env.keys()}")
             env.update(new_env)
 
             # Wait for the process to complete and get the return code
-            process.wait()        
+            process.wait()
+            info(f"[{cluster_dir}]$ [{cmd}] [{process.returncode}]")  
             return (process.returncode, env)   
          
     except subprocess.CalledProcessError as e:
