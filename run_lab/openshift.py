@@ -18,6 +18,24 @@ def create_cluster(cluster_dir, env):
         log_name="create-cluster",
         shell=True,
         env=env)
+    info("cluster created")
+    auth_file=f"{cluster_dir}/auth/kubeconfig"
+    if os.path.exists(auth_file):
+        auth_file_path = os.path.abspath(auth_file)
+        env["KUBECONFIG"] = auth_file_path
+        info(f"export KUBECONFIG={auth_file}")
+
+    else:
+        warn(f"auth file not found at {auth_file}")
+        #TODO: Error, prune and exit?
+
+def destroy_cluster(cluster_dir, env):
+    exec_cmd(
+        cmd="bin/openshift-install destroy cluster", 
+        cluster_dir=cluster_dir,
+        log_name="destroy-cluster",
+        shell=True,
+        env=env)
 
 def backup_install_config(cluster_dir):
     install_config = f"{cluster_dir}/install-config.yaml"
@@ -27,15 +45,10 @@ def backup_install_config(cluster_dir):
         return None
     backup_dir = os.path.join(cluster_dir, 'backup')
     backup_file = os.path.join(backup_dir, 'install-config.yaml')
-
-    # Create the backup directory if it doesn't exist
     os.makedirs(backup_dir, exist_ok=True)
-
-    # Copy the install-config.yaml to the backup directory
     try:
         shutil.copy(install_config, backup_file)
-        info(f"Backed up install-config to {backup_file}")
     except Exception as e:
-        info(f"Failed to back up install-config: {e}")
+        warn(f"Failed to back up install-config: {e}")
         return None
-    info(f"Backed up install-config")
+    info(f"Copied install-config to {backup_file}")

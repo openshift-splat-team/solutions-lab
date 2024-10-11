@@ -57,8 +57,6 @@ sleep 15
 # cp $CLUSTER_DIR/install-config.yaml $CLUSTER_DIR/install-config.bak.yaml
 
 
-
-
 echo "Case [$CASE_NAME][$(date)] creating cluster [$CLUSTER_NAME]..."
 sleep 15
 

@@ -1,18 +1,21 @@
 from .logs import *
+from .utils import *
 from .run_case import *
 
 def main():
+    info("Starting solutions-lab")
     cwd = os.getcwd()
-    test_cases = os.listdir(f"{cwd}/test-cases")
-    info(f"Running {len(test_cases)} test cases {cwd}...")
-
+    cases_dir = f"{cwd}/test-cases"
+    test_cases = os.listdir(cases_dir)
+    debug(f"{len(test_cases)} test cases found")
     if not test_cases:
-        info("No test cases found")
-        return
+        warn("No test cases found in [{test_cases}]")
+        # TODO: Replace with enum?
+        sys_exit(1)
     
     for case_dir in test_cases:
-        info(f"Running test case {case_dir}")
-        case_path = f"{cwd}/test-cases/{case_dir}"
+        info(f"Found test case {case_dir}")
+        case_path = f"{cases_dir}/{case_dir}"
         run_case(case_path)
 
     info("All test cases completed")

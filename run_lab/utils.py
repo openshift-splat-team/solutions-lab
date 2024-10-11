@@ -4,6 +4,7 @@ import sys
 import importlib.util
 import subprocess
 import re
+import pprint
 
 from .logs import *
 
@@ -34,7 +35,6 @@ def exec_cmd(cmd="/bin/false", cluster_dir=".", log_name="exec_cmd", env={}, she
     log_dir = f"{cluster_dir}/logs"
     os.makedirs(log_dir, exist_ok=True)
     log_file = f"{log_dir}/{log_name}.log"
-    info(f"[{cluster_dir}]$ {cmd} > {log_file}")
     try:
         with open(log_file, "w") as f:
             process = subprocess.Popen(
@@ -61,11 +61,17 @@ def exec_cmd(cmd="/bin/false", cluster_dir=".", log_name="exec_cmd", env={}, she
 
             # Wait for the process to complete and get the return code
             process.wait()
-            info(f"[{cluster_dir}]$ [{cmd}] [{process.returncode}]")  
+            run_info = {
+                "cwd": cluster_dir,
+                "cmd": cmd,
+                "returncode": process.returncode,
+                "log": log_name
+            }
+            info(f"Command executed: \n{pprint.pprint(run_info)}")  
             return (process.returncode, env)   
          
     except subprocess.CalledProcessError as e:
-        info(f"Failed to execute {cmd}. Error: {e}")
+        warn(f"Failed to execute {cmd}. Error: {e}")
         with open(log_file, "a") as f:
              f.write(e.stderr)
 
@@ -85,3 +91,6 @@ def read_ssh_pub_key():
 
 def load_extra_env(env):
     env["SSH_KEY"] = read_ssh_pub_key()
+
+def sys_exit(code):
+    sys.exit(code)

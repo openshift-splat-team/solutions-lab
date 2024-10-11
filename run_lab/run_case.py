@@ -13,20 +13,32 @@ from .logs import *
 from .templates import *
 from .openshift import *
 
+def run_tests(cluster_dir, env):
+    # Run test-case.sh if exists
+    test_script = f"{cluster_dir}/test-case.sh"
+    if os.path.exists(test_script):
+        exec_cmd(
+            cmd="./"+test_script, 
+            cluster_dir=cluster_dir,
+            log_name="test-case",
+            env=env,
+            shell=True)
+
 def run_case(case_dir):
-    info(f"Running test case [{case_dir}]...")
+    info(f"Running [{case_dir}]...")
     # get the last path segment as cluster_prefix
     cluster_prefix = case_dir.split("/")[-1]
     # get current hour and minute as a stamp
     now = datetime.datetime.now()
     stamp = now.strftime("%H%M")
     cluster_name = f"{cluster_prefix}-{stamp}"
-    info(f"Cluster name: {cluster_name}")
+    debug(f"Cluster name: {cluster_name}")
     cluster_dir = f".run/{cluster_name}"
     mkdir(cluster_dir)
     copy(case_dir, cluster_dir)
-    verify_clients(cluster_dir)
     env = os.environ.copy()
+    env["CLUSTER_DIR"] = cluster_dir
+    verify_clients(cluster_dir)
     load_extra_env(env)
     before_create = run_hook(cluster_dir, cluster_name, "before-create", env)
     captures = {}
@@ -36,9 +48,11 @@ def run_case(case_dir):
     print_version(cluster_dir)
     backup_install_config(cluster_dir)
     create_cluster(cluster_dir, env)
-    retain_cluster = True
+    run_tests(cluster_dir, env)
+    #TODO: Get from dynaconf
+    retain_cluster = False
     if not retain_cluster:
-        # destroy_cluster(cluster_dir)
+        destroy_cluster(cluster_dir, env)
         after_destroy = run_hook(cluster_dir, cluster_name, "after-destroy", captures)
     info(f"Test case [{cluster_name}] completed")
 

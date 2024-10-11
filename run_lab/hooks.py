@@ -27,7 +27,7 @@ def run_hook(cluster_dir, cluster_name, hook, env):
         result = exec_hook(cluster_dir, cluster_name, hook_file, env)
         returncode = result[0]
         if returncode != 0:
-            info(f"Failed to execute {hook_script}, return code is {returncode}")
+            warn(f"Failed to execute {hook_script}, return code is {returncode}")
             sys.exit(returncode)
         else:
             captures = result[1]
