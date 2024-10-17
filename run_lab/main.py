@@ -5,11 +5,11 @@ from .run_case import *
 def main():
     info("Starting solutions-lab")
     cwd = os.getcwd()
-    cases_dir = f"{cwd}/test-cases"
+    cases_dir = f"{cwd}/labs"
     test_cases = os.listdir(cases_dir)
-    debug(f"{len(test_cases)} test cases found")
+    debug(f"{len(test_cases)} labs found")
     if not test_cases:
-        warn("No test cases found in [{test_cases}]")
+        warn(f"No labs found in [{cases_dir}]")
         # TODO: Replace with enum?
         sys_exit(1)
     

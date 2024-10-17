@@ -1,28 +1,23 @@
 import logging
 from rich.logging import RichHandler
 
-CONSOLE_FORMAT = "%(message)s"  # Rich format for console
-FILE_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"  # Regular format for file
-
+CONSOLE_FORMAT = "%(message)s" 
+FILE_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 LOG_FILE = "run_lab.log.txt"
 
-
-# Configure logging for both console and file
 logging.basicConfig(
-    level="DEBUG",  # Set the logging level
-    format=FILE_FORMAT,  # Use file format for the root logger
+    level="DEBUG",
+    format=FILE_FORMAT,
     datefmt="[%X]",
     handlers=[
-        logging.FileHandler(LOG_FILE),  # File logging with regular format
+        logging.FileHandler(LOG_FILE),
     ]
 )
 
-# Create RichHandler for console logging
 console_handler = RichHandler()
 console_handler.setLevel(logging.DEBUG)
 console_handler.setFormatter(logging.Formatter(CONSOLE_FORMAT, datefmt="[%X]"))
 
-# Get the root logger
 logs = logging.getLogger("rich")
 logs.addHandler(console_handler)
 

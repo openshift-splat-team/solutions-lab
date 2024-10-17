@@ -16,14 +16,18 @@ from .settings import *
 
 def run_tests(cluster_dir, env):
     # Run test-case.sh if exists
-    test_script = f"{cluster_dir}/test-case.sh"
+    script_file = "test-case.sh"
+    test_script = f"{cluster_dir}/"+script_file
     if os.path.exists(test_script):
+        info("Executing test-case.sh")
         exec_cmd(
-            cmd="./"+test_script, 
+            cmd="./"+script_file, 
             cluster_dir=cluster_dir,
             log_name="test-case",
             env=env,
             shell=True)
+    else:
+        warn("No test-case.sh found, skipping test execution")
 
 def run_case(case_dir):
     info(f"Running [{case_dir}]")
