@@ -6,6 +6,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 DIRNAME="$(basename $DIR)"
 
 export CLUSTER_NAME=${CLUSTER_NAME:-"$DIRNAME"}
+export CLUSTER_DIR="$DIR/.cluster"
 export STACK_NAME=${STACK_NAME:-"$DIRNAME"}
 export SSH_KEY=${SSH_KEY:-$(cat $HOME/.ssh/id_rsa.pub)}
 
@@ -46,4 +47,7 @@ echo "Private Subnet 1 ID: $PRIVATE_SUBNET_1_ID"
 echo "Private Subnet 2 ID: $PRIVATE_SUBNET_2_ID"
 echo "Private Subnet 3 ID: $PRIVATE_SUBNET_3_ID"
 
-envsubst < install-config.env.yaml > install-config.env.yaml.tmp
+mkdir -p $CLUSTER_DIR
+
+envsubst < $DIR/install-config.env.yaml > $CLUSTER_DIR/install-config.yaml
+cp $CLUSTER_DIR/install-config.yaml $CLUSTER_DIR/install-config.backup.yaml
