@@ -1,8 +1,10 @@
 #!/bin/bash
-
 set -x 
 
-export TARGET_DIR="./release-latest/bin"
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+REPO_DIR="$(dirname $DIR)"
+
+export TARGET_DIR="$REPO_DIR/.bin"
 mkdir -p "$TARGET_DIR"
 
 # OpenShift Installer
